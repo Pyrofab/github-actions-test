@@ -35,9 +35,8 @@ jobs:
         echo "Output File: $repo_name".md
         url=$(echo "https://raw.githubusercontent.com/$repo/$ref/$content")
         echo "$url"
-        out=$(curl "$url" |  sed -e 's/<!--{//g' -e 's/}-->//g')
         git pull # in case there was an update since
-        echo $out > "$repo_name".md
+        curl "$url" |  sed -e 's/<!--{//g' -e 's/}-->//g' > "$repo_name".md
         git add .
         git commit -m "Update documentation for ${{ github.event.client_payload.repo }}"
         git push
