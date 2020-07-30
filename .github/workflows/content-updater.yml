@@ -26,7 +26,7 @@ jobs:
         repo_name=$(echo ${{ github.event.client_payload.repo }} | cut -d/ -f2 | tr '[:upper:]' '[:lower:]')
         echo ${{ github.event.client_payload.content }}
         echo "$repo_name".md
-        echo "${{ github.event.client_payload.content }}" > "$repo_name".md
+        curl "https://raw.githubusercontent.com/""${{ github.event.client_payload.repo }}"/"${{ github.event.client_payload.content }}" > "$repo_name".md
         git config user.name github-actions
         git config user.email github-actions@github.com
         git add .
