@@ -25,11 +25,10 @@ jobs:
         echo "Content: $content"
         repo_name=$(echo $repo | cut -d/ -f2 | tr '[:upper:]' '[:lower:]')
         echo "Output File: $repo_name".md
-        url=$(echo "https://raw.githubusercontent.com/$repo/$ref/$content")
-        echo "Fetching content from $url"
+        git clone -b "$ref" "https://github.com/$repo.git" "/tmp/$repo_name"
         git pull --ff-only # there may be concurrent commits while this job runs
-        curl "$url" | sed -e 's/<!--jekyll-only>//g' -e 's/<\/jekyll-only-->//g' -e 's/<!--github-only-->/<!--github-only: /g' -e 's/<!--\/github-only-->/-->/g' > "$repo_name".md
-        cat "$repo_name".md
+        # Uncomment jekyll-specific content and comment out github-specific content
+        cat "/tmp/$repo_name/$content" | sed -e 's/<!--jekyll-only>//g' -e 's/<\/jekyll-only-->//g' -e 's/<!--github-only-->/<!--github-only: /g' -e 's/<!--\/github-only-->/-->/g' > "$repo_name".md
         git add .
         git commit -m "Update documentation for ${{ github.event.client_payload.repo }}"
         git push
