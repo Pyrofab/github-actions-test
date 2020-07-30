@@ -28,7 +28,8 @@ jobs:
         url=$(echo "https://raw.githubusercontent.com/$repo/$ref/$content")
         echo "Fetching content from $url"
         git pull --ff-only # there may be concurrent commits while this job runs
-        curl "$url" |  sed -e 's/<!--{//g' -e 's/}-->//g' > "$repo_name".md
+        # Uncomment jekyll-specific content and comment out github-specific content
+        curl "$url" |  sed -e 's/<!--jekyll-only>//g' -e 's/<\/jekyll-only-->//g' -e 's/<!--github-only-->/<!--github-only: /g' -e 's/<!--\/github-only-->/-->/g' > "$repo_name".md
         git add .
         git commit -m "Update documentation for ${{ github.event.client_payload.repo }}"
         git push
