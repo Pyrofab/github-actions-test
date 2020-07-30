@@ -27,9 +27,8 @@ jobs:
         echo "Output File: $repo_name".md
         url=$(echo "https://raw.githubusercontent.com/$repo/$ref/$content")
         echo "Fetching content from $url"
-        curl "$url" |  sed -e 's/<!--{//g' -e 's/}-->//g' > /tmp/"$repo_name".md
-        git pull # there may be concurrent commits while this job runs
-        mv /tmp/"$repo_name".md "$repo_name".md
+        git pull --ff-only # there may be concurrent commits while this job runs
+        curl "$url" |  sed -e 's/<!--{//g' -e 's/}-->//g' > "$repo_name".md
         git add .
         git commit -m "Update documentation for ${{ github.event.client_payload.repo }}"
         git push
