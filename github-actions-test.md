@@ -6,4 +6,8 @@ title:
 
 A repository to test github actions
 
-<!--github-only: ## Github-only install instructions-->
+<!--github-only: 
+## Github-only install instructions
+
+Just copy the actions.
+-->
