@@ -33,7 +33,7 @@ jobs:
         echo "Output File: $repo_name".md
         url=$(echo "https://raw.githubusercontent.com/$repo/$ref/$content")
         echo "$url"
-        curl "$url" > "$repo_name".md
+        curl "$url" |  sed -e 's/<!--{//g' -e 's/}-->//g' > "$repo_name".md
         git config user.name github-actions
         git config user.email github-actions@github.com
         git add .
