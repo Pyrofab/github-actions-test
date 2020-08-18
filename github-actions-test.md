@@ -6,6 +6,8 @@ title:
 
 A repository to test github actions
 
+Hello Jekyll
+
 <!--github-only: 
 ## Github-only install instructions
 
